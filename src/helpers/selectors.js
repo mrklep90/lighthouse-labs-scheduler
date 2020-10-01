@@ -1,4 +1,6 @@
-export function getAppointmentsForDay(state, day) {
+//OMG THIS IS TERRIBLE - MUST REFACTOR!!!!!!
+
+export default function getAppointmentsForDay(state, day) {
 
   if (state.days.length === 0) {
     return [];
