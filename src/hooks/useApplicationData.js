@@ -22,6 +22,19 @@ export default function useApplicationData() {
 
   const setDay = day => setState({ ...state, day });
 
+  const updateSpots = (initialState, remove = false) => {
+    const state = { ...initialState };
+    const day = state.days.find(day => day.name === state.day);
+    
+    if (remove) {
+      day.spots--;
+    } else {
+      day.spots++;
+    }
+    
+    return state.days
+  }
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -37,7 +50,8 @@ export default function useApplicationData() {
     .then(() => {
       setState({
         ...state,
-        appointments
+        appointments,
+        days: updateSpots(state, true)
       })
     })  
   }
@@ -57,7 +71,8 @@ export default function useApplicationData() {
     .then(() => {
       setState({
         ...state,
-        appointments
+        appointments,
+        days: updateSpots(state)
       })
     })
   }
