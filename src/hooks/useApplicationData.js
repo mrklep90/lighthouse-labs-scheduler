@@ -27,11 +27,9 @@ export default function useApplicationData() {
     
     if (remove) {
       day.spots++
-    } else if (state.appointments[id].interview) {
-      day.spots = day.spots
-    } else {
+    } else if (!state.appointments[id].interview) {
       day.spots--
-    }
+    } 
     
     return state.days
 
