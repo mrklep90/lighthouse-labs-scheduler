@@ -4,22 +4,26 @@ import Button from "../Button";
 import InterviewerList from "../InterviewerList";
 
 export default function Form(props) {
+  // States
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
+  // Clears form data when cancelling out of a form (invoked by calling cancel function)
   const reset = () => {
     setName("");
     setInterviewer(null);
   }
 
+  // Cancel button functionality (closes appointment booking form)
   const cancel = () => {
     reset();
     const onCancel = props.onCancel();
     return onCancel;
   }
 
-  const  validate = () => {
+  // Checks that user name has been provided, prevents user from clicking "Save" on form if not
+  const validate = () => {
     if (name === "") {
       setError("Student name cannot be blank");
       return;
@@ -44,10 +48,7 @@ export default function Form(props) {
         />
       </form>
       <section className="appointment__validation">{error}</section>
-      {props.interviewer
-      ? <InterviewerList interviewers={props.interviewers} interviewer={interviewer} setInterviewer={setInterviewer} />
-      : <InterviewerList interviewers={props.interviewers} interviewer={interviewer} setInterviewer={setInterviewer} />
-      }
+      <InterviewerList interviewers={props.interviewers} interviewer={interviewer} setInterviewer={setInterviewer} />
     </section>
     <section className="appointment__card-right">
       <section className="appointment__actions">
