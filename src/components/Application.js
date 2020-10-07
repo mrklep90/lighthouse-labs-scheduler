@@ -6,6 +6,8 @@ import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay  } from "helpers/selectors";
 
 export default function Application(props) {
+  
+  // Destructuring useApplicationData hook to access functionality
   const {
     state,
     setDay,
@@ -13,6 +15,7 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
+  // Retrieve appointments for the day and allocate props
   const schedule = getAppointmentsForDay(state, state.day).map((appointment) => {
     
     return (
@@ -25,9 +28,9 @@ export default function Application(props) {
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
       />
-    );
+    )
 
-  })
+  });
 
   return (
     <main className="layout">
@@ -56,5 +59,6 @@ export default function Application(props) {
         <Appointment key="last" time="5pm" />
       </section>
     </main>
-    );
-  }
+  )
+
+}
