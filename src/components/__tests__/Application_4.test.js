@@ -1,8 +1,6 @@
 import React from "react";
-
 import { render, cleanup, waitForElement, fireEvent, getByText, getAllByTestId, getByPlaceholderText, queryByText, queryByAltText } from "@testing-library/react";
 import "@testing-library/jest-dom";
-
 import Application from "components/Application";
 
 afterEach(cleanup);

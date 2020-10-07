@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "axios";
-
 import { render, cleanup, waitForElement, fireEvent, getByText, getAllByTestId , getByAltText, getByPlaceholderText, queryByText, queryByAltText } from "@testing-library/react";
 import "@testing-library/jest-dom";
-
 import Application from "components/Application";
 
 afterEach(cleanup);
@@ -66,7 +64,7 @@ describe("Application", () => {
     
   });
   //---------------------------------------------------------------------------------------
-  // Test Three
+  // Test Three --- Moved to Application_3.test.js
   //---------------------------------------------------------------------------------------
   // xit("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
   //   // 1. Render the Application.
@@ -104,7 +102,7 @@ describe("Application", () => {
     
   // });
   //---------------------------------------------------------------------------------------
-  // Test Four
+  // Test Four --- Moved to Application_4.test.js
   //---------------------------------------------------------------------------------------
   // xit("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
   //   // 1. Render the Application.
