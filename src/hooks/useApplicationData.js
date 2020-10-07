@@ -22,17 +22,19 @@ export default function useApplicationData() {
 
   const setDay = day => setState({ ...state, day });
 
-  const updateSpots = (initialState, remove = false) => {
-    const state = { ...initialState };
+  const updateSpots = (state, id, remove = true) => {
     const day = state.days.find(day => day.name === state.day);
     
     if (remove) {
-      day.spots--;
+      day.spots++
+    } else if (state.appointments[id].interview) {
+      day.spots = day.spots
     } else {
-      day.spots++;
+      day.spots--
     }
     
     return state.days
+
   }
 
   function bookInterview(id, interview) {
@@ -45,13 +47,14 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+
     
     return axios.put(`/api/appointments/${id}`, appointment)
     .then(() => {
       setState({
         ...state,
         appointments,
-        days: updateSpots(state, true)
+        days: updateSpots(state, id, false)
       })
     })  
   }
