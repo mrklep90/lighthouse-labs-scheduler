@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// getAppointmentsForDay
+// Retrieve appointments for the given day
 //---------------------------------------------------------------------------------------
 export function getAppointmentsForDay(state, day) {
 
@@ -9,7 +9,7 @@ export function getAppointmentsForDay(state, day) {
 
 }
 //---------------------------------------------------------------------------------------
-// getInterviewersForDay
+// Retrieve interviewers for the given day
 //---------------------------------------------------------------------------------------
 export function getInterviewersForDay(state, day) {
   
@@ -19,7 +19,7 @@ export function getInterviewersForDay(state, day) {
 
 }
 //---------------------------------------------------------------------------------------
-// getInterview
+// Returns an object with interview/interviewer details if applicable
 //---------------------------------------------------------------------------------------
 export function getInterview(state, interview) {
   

@@ -29,6 +29,7 @@ export default function useApplicationData() {
 
   // Called when completing axios PUT and DELETE requests to manage the spots state
   const updateSpots = (state, id, appointment) => {
+    
     const day = state.days.find(day => day.name === state.day);
     
     // if interview key is null (cancel interview), increase spot on axios action
@@ -45,6 +46,7 @@ export default function useApplicationData() {
 
   // Enables the booking of appointments, manages the axios PUT request
   function bookInterview(id, interview) {
+    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -68,6 +70,7 @@ export default function useApplicationData() {
 
   // Enables cancelling of appointments, manages the axios DELETE request
   function cancelInterview(id) {
+    
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -86,6 +89,7 @@ export default function useApplicationData() {
         days: updateSpots(state, id, appointment)
       })
     })
+
   }
 
   return { state, setDay, bookInterview, cancelInterview }
