@@ -154,7 +154,7 @@ test("getInterview returns an object with the interviewer data", () => {
 
 });
 //---------------------------------------------------------------------------------------
-// Test One
+// Test Twelve
 //---------------------------------------------------------------------------------------
 test("getInterview returns null if no interview is booked", () => {
   const result = getInterview(state, state.appointments["2"].interview);
