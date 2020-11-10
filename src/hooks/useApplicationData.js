@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 
 export default function useApplicationData() {
 
-  // Initial state(s) upon application load
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
-
+  const SET_DAY = "SET_DAY";
+  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_INTERVIEW = "SET_INTERVIEW";
+  
   // Updates state with actual data
   useEffect(() => {
 
@@ -19,30 +15,28 @@ export default function useApplicationData() {
       axios.get('/api/appointments'),
       axios.get('/api/interviewers')
     ]).then((all) => {
-      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}));
+      dispatch({ type: SET_APPLICATION_DATA, value: all.map(apiData => apiData.data) });
     });
 
   }, []);
 
   // Called by DayList component
-  const setDay = day => setState({ ...state, day });
+  const setDay = day => dispatch({ type: SET_DAY, value: day });
 
   // Called when completing axios PUT and DELETE requests to manage the spots state
-  const updateSpots = (state, id, appointment) => {
-    
-    const day = state.days.find(day => day.name === state.day);
-    
-    // if interview key is null (cancel interview), increase spot on axios action
-    if (!appointment.interview) {
-      day.spots++
-      // if an interview does not exist for the specified appointment (booking interview), decrease spot on axios action. If interview does exist (update), no change.
-    } else if (!state.appointments[id].interview) {
-      day.spots--
-    } 
-    
-    return state.days
-
-  };
+  const updateSpots = (initialState, appointments) => {
+    const state = { ...initialState };
+    const days = state.days.map(day => {
+      let number = 0;
+      day.appointments.forEach(num => {
+        if (!appointments[num].interview) {
+          number++
+        }
+      })
+      return {...day, spots: number}
+    })
+    return days;
+  }
 
   // Enables the booking of appointments, manages the axios PUT request
   function bookInterview(id, interview) {
@@ -59,13 +53,8 @@ export default function useApplicationData() {
 
     return axios.put(`/api/appointments/${id}`, appointment)
     .then(() => {
-      setState({
-        ...state,
-        appointments,
-        days: updateSpots(state, id, appointment)
-      })
+      dispatch({ type: SET_INTERVIEW, value: appointments });
     })
-
   }
 
   // Enables cancelling of appointments, manages the axios DELETE request
@@ -83,14 +72,33 @@ export default function useApplicationData() {
 
     return axios.delete(`/api/appointments/${id}`, appointment)
     .then(() => {
-      setState({
-        ...state,
-        appointments,
-        days: updateSpots(state, id, appointment)
-      })
+      dispatch({ type: SET_INTERVIEW, value: appointments });
     })
 
   }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case SET_DAY:
+        return { ...state, day: action.value };
+      case SET_APPLICATION_DATA:
+        return { ...state, days: action.value[0], appointments: action.value[1], interviewers: action.value[2] };
+      case SET_INTERVIEW:
+        return { ...state, appointments: action.value, days: updateSpots(state, action.value) };
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+    }
+  };
+
+  // Initial state(s) upon application load
+  const [state, dispatch] = useReducer(reducer, {
+    day: 'Monday',
+    days: [],
+    appointments: {},
+    interviewers: {}
+  });
 
   return { state, setDay, bookInterview, cancelInterview }
   
